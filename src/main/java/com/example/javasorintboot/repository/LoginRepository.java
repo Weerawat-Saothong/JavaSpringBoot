@@ -10,5 +10,6 @@ import com.example.javasorintboot.entity.LoginEntity;
 @Repository
 public interface LoginRepository extends JpaRepository<LoginEntity, String> {
     Optional<LoginEntity> findByEmailAndPassword(String email, String password);
+    Optional<LoginEntity> findByEmail(String email);
 
 }

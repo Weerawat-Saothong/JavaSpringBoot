@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.javasorintboot.entity.LoginEntity;
 import com.example.javasorintboot.entity.table;
+import com.example.javasorintboot.model.RegisterRes;
 import com.example.javasorintboot.repository.LoginRepository;
 import com.example.javasorintboot.repository.TableFood;
 
@@ -21,8 +22,8 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public Optional<LoginEntity> LogingMyEmailAndPassword(String email, String password) {
-        return loginRepository.findByEmailAndPassword(email, password);
+    public Optional<LoginEntity> LogingMyEmail(String email) {
+        return loginRepository.findByEmail(email);
     }
 
     public List<LoginEntity> FindAll() {
@@ -34,6 +35,17 @@ public class LoginService {
     }
     public List<table> findAll() {
         return tableFoodRepository.findAll();
+    }
+
+    public LoginEntity ReginsterService(RegisterRes register) {
+        LoginEntity registerService = new LoginEntity();
+        registerService.setEmail(register.getEmail());
+        registerService.setPassword(register.getPassword());
+        registerService.setName(register.getName());
+        registerService.setPhone(register.getPhone());
+        registerService.setRoleName(register.getRole());
+
+        return loginRepository.save(registerService);
     }
 
 }

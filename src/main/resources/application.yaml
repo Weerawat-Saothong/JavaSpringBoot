@@ -3,12 +3,12 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://localhost:8000/testbackend
+    url: jdbc:postgresql://localhost:8000/javasPringBootDatabase
     username: postgres
     password: 0954017406
     driver-class-name: org.postgresql.Driver
   server:
-    port: 8080
+    port: 8000
   servlet:
     multipart:
       max-file-size: 5MB

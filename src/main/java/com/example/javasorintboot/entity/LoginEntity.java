@@ -10,10 +10,9 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@Table(name = "login")
+@Table(name = "User_login")
 @EqualsAndHashCode(callSuper = true)
 public class LoginEntity extends BaseEnity {
-  
 
     @Column(name = "email", nullable = false, length = 60, unique = true)
     private String email;
@@ -21,5 +20,14 @@ public class LoginEntity extends BaseEnity {
     @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @Column(name = "phone", nullable = false)
+    private String phone;
+
+    @Column(name = "roleName", nullable = false)
+    private String roleName;
 
 }
