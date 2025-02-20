@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.javasorintboot.business.LoginBusiness;
 import com.example.javasorintboot.entity.LoginEntity;
-import com.example.javasorintboot.entity.table;
+import com.example.javasorintboot.exception.ResponseException;
 import com.example.javasorintboot.model.LoginRes;
 import com.example.javasorintboot.model.RegisterRes;
 import com.example.javasorintboot.model.Response;
@@ -29,7 +29,7 @@ public class Login {
     }
 
     @PostMapping("/login")
-    public Response<String> postLogin(@RequestBody LoginRes login) {
+    public Response<String> postLogin(@RequestBody LoginRes login) throws ResponseException {
 
         return loginBusiness.Login(login);
     }
@@ -40,22 +40,15 @@ public class Login {
     }
 
     @GetMapping("scanqrcode/{id}")
-    public Response<String> loginByQRcode(@PathVariable String id) {
+    public Response<String> loginByQRcode(@PathVariable String id) throws ResponseException {
 
         return loginBusiness.LoginByQRcodeBusiness(id);
     }
 
-    @GetMapping("scanqrcode")
-    public Response<List<table>> getAllID() {
-        return loginBusiness.GetAllId();
-    }
-
     @PostMapping("register")
-    public Response<String> postMethodName(@RequestBody RegisterRes register) {
-        
-        
+    public Response<String> postMethodName(@RequestBody RegisterRes register) throws ResponseException {
+
         return loginBusiness.Reginster(register);
     }
-    
 
 }

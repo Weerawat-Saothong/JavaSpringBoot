@@ -1,3 +1,6 @@
+server:
+  port: 8085
+
 spring:
   jpa:
     hibernate:
@@ -7,15 +10,12 @@ spring:
     username: postgres
     password: 0954017406
     driver-class-name: org.postgresql.Driver
-  server:
-    port: 8000
+
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 12MB
 
-app:
-  token:
-    secret: <j#muSecret2024JJ>
-    issuer: BackendService
-    expiration: 86400000
+
+
+

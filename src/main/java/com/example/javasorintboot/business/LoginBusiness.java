@@ -1,5 +1,4 @@
 package com.example.javasorintboot.business;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.javasorintboot.entity.LoginEntity;
 import com.example.javasorintboot.entity.table;
+import com.example.javasorintboot.exception.ResponseException;
 import com.example.javasorintboot.model.LoginRes;
 import com.example.javasorintboot.model.RegisterRes;
 import com.example.javasorintboot.model.Response;
@@ -47,39 +47,28 @@ public class LoginBusiness {
         return passwordEncoder.matches(passwordNotHash, passwordOnDatabase);
     }
 
-    public Response<String> Login(LoginRes login) {
+    public Response<String> Login(LoginRes login) throws ResponseException {
 
         Response<String> response = new Response<>();
         if (!isValidEmail(login.getEmail())) {
-            response.setResult(false);
-            response.setMessage("Invalid email");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return response;
+            throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(), "Invalid email");
         } else if (login.getPassword() == null) {
-            response.setResult(false);
-            response.setMessage("Invalid password");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            return response;
+            throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(), "Invalid password");
         } else {
             Optional<LoginEntity> user = loginService.LogingMyEmail(login.getEmail());
             if (!checkPassword(login.getPassword(), user.get().getPassword())) {
-                response.setResult(false);
-                response.setMessage("Invalid email or password");
-                response.setStatus(HttpStatus.BAD_REQUEST.value());
-                return response;
+                throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(), "Invalid email or password");
             } else if (!user.isPresent()) {
-                response.setResult(false);
-                response.setMessage("User not found");
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return response;
+
+                throw ResponseException.responseError(HttpStatus.NOT_FOUND.value(), "User not found");
             } else {
-                response.setResult(true);
                 response.setMessage("Login success");
                 response.setData(user.get().getEmail());
                 response.setStatus(HttpStatus.OK.value());
                 return response;
             }
         }
+
     }
 
     public Response<List<LoginEntity>> getLogin() {
@@ -93,14 +82,12 @@ public class LoginBusiness {
         return response;
     }
 
-    public Response<String> LoginByQRcodeBusiness(String qrCode) {
+    public Response<String> LoginByQRcodeBusiness(String qrCode) throws ResponseException {
         table table = loginService.findByID(qrCode);
         Response<String> response = new Response<>();
 
         if (table == null) {
-            response.setResult(false);
-            response.setMessage("Invalid QR code Please try again");
-            response.setStatus(HttpStatus.NOT_FOUND.value());
+            throw ResponseException.responseError(HttpStatus.NOT_FOUND.value(), "Invalid QR code Please try again");
         } else {
             response.setResult(true);
             response.setMessage("success");
@@ -111,58 +98,24 @@ public class LoginBusiness {
         return response;
     }
 
-    public Response<List<table>> GetAllId() {
-        List<table> table = loginService.findAll();
-        Response<List<table>> response = new Response<>();
-        if (table == null) {
-            response.setResult(false);
-            response.setMessage("Invalid QR code Please try again");
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-        } else {
-            response.setResult(true);
-            response.setMessage("success");
-            response.setData(table);
-            response.setStatus(HttpStatus.OK.value());
-        }
-
-        return response;
-    }
-
-    public Response<List<table>> getAllID() {
-        List<table> table = loginService.findAll();
-        Response<List<table>> response = new Response<>();
-        if (table == null) {
-            response.setResult(false);
-            response.setMessage("Not Found");
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-        } else {
-            response.setResult(true);
-            response.setMessage("success");
-            response.setData(table);
-            response.setStatus(HttpStatus.OK.value());
-        }
-        return response;
-    }
-
     // Logic for Register
 
-    public Response<String> Reginster(RegisterRes register) {
+    public Response<String> Reginster(RegisterRes register) throws ResponseException {
 
         Response<String> response = new Response<>();
         if (register == null) {
-            response.setResult(false);
-            response.setMessage("Register data is null. Please provide valid input.");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+
+            throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(),
+                    "Register data is null. Please provide valid input.");
 
         } else if (!register.getPassword().equals(register.getConfrim_password())) {
-            response.setResult(false);
-            response.setMessage("Password and Confirm Password does not match.");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+
+            throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(),
+                    "Password and Confirm Password does not match.");
 
         } else if (!isValidEmail(register.getEmail())) {
-            response.setResult(false);
-            response.setMessage("Invalid Email");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+
+            throw ResponseException.responseError(HttpStatus.BAD_REQUEST.value(), "Invalid Email");
 
         } else {
             register.setPassword(hashPassword(register.getPassword()));
