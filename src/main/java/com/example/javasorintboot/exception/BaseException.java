@@ -1,14 +1,24 @@
 package com.example.javasorintboot.exception;
 
-public abstract class BaseException extends Exception {
-    private final int code;
+import lombok.Getter;
+import lombok.Setter;
 
-    public BaseException(int code, String message) {
+@Setter
+@Getter
+public class BaseException extends RuntimeException {
+    private Integer code;
+    private String message;
+    private Boolean result;
+
+    public BaseException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    public BaseException(Integer code, String message) {
         super(message);
         this.code = code;
+        this.message = message;
     }
 
-    public int getCode() {
-        return code;
-    }
 }

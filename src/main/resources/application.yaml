@@ -16,6 +16,8 @@ spring:
       max-file-size: 5MB
       max-request-size: 12MB
 
-
-
-
+app:
+  token:
+    secret: <j#muSecret2024JJ>
+    issuer: BackendService
+    expiration: 86400000
